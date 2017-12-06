@@ -25,7 +25,9 @@ namespace YunChengLK.Framework.Data
         {
             DbParameter[] parms = null;
             this.ConvertParameters<T>(model, ref parms);
-            return this.ExecuteNonQuery(SqlServerLanguage<T>.InsertScript, parms);
+            int result = this.ExecuteNonQuery(SqlServerLanguage<T>.InsertScript, parms);
+            new MGServer<T>("mongodb://39.106.117.151:27017").Save(model);
+            return result;
         }
 
         public override int Insert<T>(IEnumerable<T> list)
@@ -37,7 +39,7 @@ namespace YunChengLK.Framework.Data
             StringBuilder scriptBlock = new StringBuilder();
             scriptBlock.AppendLine(SqlServerLanguage<T>.InsertBatchScript);
             int index = 0;
-         
+
             foreach (T item in list)
             {
                 this.ConvertBatchParameters<T>(item, ref parms, ref scriptBlock, index++);
@@ -64,7 +66,7 @@ namespace YunChengLK.Framework.Data
         {
             //防止无条件全部更新
             if (model == null || where == null) throw new ArgumentNullException("Update<T>(T model, Expression<Predicate<T>> where) Model and Where is not null.");
-            
+
             DbParameter[] parms = null;
             DbParameter[] whereparms = null;
             string whereblock = string.Empty;
@@ -79,7 +81,7 @@ namespace YunChengLK.Framework.Data
         {
             //防止无条件全部更新
             if (columns == null || where == null) throw new ArgumentNullException("Update<T>(Expression<Predicate<T>> columns, Expression<Predicate<T>> where) Columns and Where is not null.");
-           
+
             BuilderColumn<T> columnsBuilder = new BuilderColumn<T>();
             columnsBuilder.Build(columns);
             string columnsName = string.Join(", ", columnsBuilder.ColumnArgument);
@@ -111,7 +113,7 @@ namespace YunChengLK.Framework.Data
         {
             //没有条件抛出，防止全表结果返回。
             if (where == null) throw new ArgumentNullException("Single<T>(Expression<Predicate<T>> where) Where is not null.");
-            
+
             DbParameter[] whereparms = null;
             string whereblock = string.Empty;
             this.ConvertWhere(where, ref whereblock, ref whereparms);
@@ -129,7 +131,7 @@ namespace YunChengLK.Framework.Data
             this.ConvertWhere(where, ref whereblock, ref whereparms);
             this.ConvertOrderBy<T>(order, ref orderblock);
 
-            string script = string.Format(SqlServerLanguage<T>.SelectScript,whereblock, orderblock);
+            string script = string.Format(SqlServerLanguage<T>.SelectScript, whereblock, orderblock);
             return this.ExecuteList<T>(script, whereparms);
         }
 

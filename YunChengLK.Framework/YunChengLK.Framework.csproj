@@ -45,6 +45,10 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\Reference\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Reference\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -54,6 +58,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="XY.DataAccess">
+      <HintPath>..\Reference\XY.DataAccess.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\ColumnAttribute.cs" />
@@ -75,7 +82,7 @@
     <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\OperationExtensions.cs" />
     <Compile Include="Data\Parameter.cs" />
-    <Compile Include="Data\Provider\MongoServer.cs" />
+    <Compile Include="Data\Provider\MGServer.cs" />
     <Compile Include="Data\Provider\SqlServer.cs" />
     <Compile Include="Data\Provider\SqlServerLanguage.cs" />
     <Compile Include="Data\TableAttribute.cs" />
