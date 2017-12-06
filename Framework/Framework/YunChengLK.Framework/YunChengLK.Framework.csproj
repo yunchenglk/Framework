@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3A7AACD2-0D23-4F13-AD02-C2FA61B65F2F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YunChengLK.Framework</RootNamespace>
+    <AssemblyName>YunChengLK.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EmitMapper">
+      <HintPath>..\Reference\EmitMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Reference\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\ColumnAttribute.cs" />
+    <Compile Include="Data\Configuration\Connection.cs" />
+    <Compile Include="Data\Configuration\ConnectionConfig.cs" />
+    <Compile Include="Data\Configuration\Database.cs" />
+    <Compile Include="Data\Core\BaseDatabase.cs" />
+    <Compile Include="Data\Core\BuilderColumn.cs" />
+    <Compile Include="Data\Core\BuilderOrderby.cs" />
+    <Compile Include="Data\Core\BuilderWhere.cs" />
+    <Compile Include="Data\Core\DataReaderExtensions.cs" />
+    <Compile Include="Data\Core\DataReaderExtensionsWithoutCheck.cs" />
+    <Compile Include="Data\Core\Entity.cs" />
+    <Compile Include="Data\Core\EntityProperty.cs" />
+    <Compile Include="Data\Core\ExpressionVisitor.cs" />
+    <Compile Include="Data\Core\PartialEvaluator.cs" />
+    <Compile Include="Data\Core\SqlHelper.cs" />
+    <Compile Include="Data\IDatabase.cs" />
+    <Compile Include="Data\IEntity.cs" />
+    <Compile Include="Data\OperationExtensions.cs" />
+    <Compile Include="Data\Parameter.cs" />
+    <Compile Include="Data\Provider\SqlServer.cs" />
+    <Compile Include="Data\Provider\SqlServerLanguage.cs" />
+    <Compile Include="Data\TableAttribute.cs" />
+    <Compile Include="Extensions\Datetime.cs" />
+    <Compile Include="Extensions\Enumerable.cs" />
+    <Compile Include="Extensions\HttpContextBase.cs" />
+    <Compile Include="Extensions\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="Extensions\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="Extensions\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Extensions\String.cs" />
+    <Compile Include="Extensions\StringEnumerable.cs" />
+    <Compile Include="Logging\Configuration\Config.cs" />
+    <Compile Include="Logging\ILogProvider.cs" />
+    <Compile Include="Logging\Log4NetLogProvider.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LogInfo.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\WebErrorCatchModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\BinaryFormatterWrapper.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\SerializationMode.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="Serialization\SerializerBase.cs" />
+    <Compile Include="Serialization\XmlSerialize.cs" />
+    <Compile Include="Serialization\XmlSerializerWrapper.cs" />
+    <Compile Include="Utility\Ensure.cs" />
+    <Compile Include="Utility\EnumHandler.cs" />
+    <Compile Include="Utility\Guard.cs" />
+    <Compile Include="Utility\Guider.cs" />
+    <Compile Include="Utility\ModelTo.cs" />
+    <Compile Include="Utility\Pager.cs" />
+    <Compile Include="Utility\PropertyAccessor.cs" />
+    <Compile Include="Utility\PropertyAccessorKey.cs" />
+    <Compile Include="Utility\PropertyAccessor~T.cs" />
+    <Compile Include="Utility\Singleton.cs" />
+    <Compile Include="Utility\ThreadSafeDictionary.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configs\Database.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\Log4Net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Extensions\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Extensions\obj\Debug\Uni2uni.Framework.csproj.FileListAbsolute.txt" />
+    <Content Include="Extensions\obj\Debug\Uni2uni.Framework.dll" />
+    <Content Include="Extensions\obj\Debug\Uni2uni.Framework.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+    <Folder Include="Extensions\obj\Debug\TempPE\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
