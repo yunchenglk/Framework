@@ -39,6 +39,12 @@
     <Reference Include="log4net">
       <HintPath>..\Reference\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\Reference\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\Reference\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -69,6 +75,7 @@
     <Compile Include="Data\IEntity.cs" />
     <Compile Include="Data\OperationExtensions.cs" />
     <Compile Include="Data\Parameter.cs" />
+    <Compile Include="Data\Provider\MongoServer.cs" />
     <Compile Include="Data\Provider\SqlServer.cs" />
     <Compile Include="Data\Provider\SqlServerLanguage.cs" />
     <Compile Include="Data\TableAttribute.cs" />

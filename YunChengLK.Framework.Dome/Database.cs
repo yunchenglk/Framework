@@ -20,5 +20,12 @@ namespace YunChengLK.Framework.Dome
                 return new SqlServer(ConnectionConfig.Connections["Test"]);
             }
         }
+        public static MongoServer mongo
+        {
+            get
+            {
+                return new MongoServer(ConnectionConfig.Connections["Test"]);
+            }
+        }
     }
 }
