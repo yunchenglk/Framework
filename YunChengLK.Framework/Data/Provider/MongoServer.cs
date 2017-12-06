@@ -14,7 +14,7 @@ namespace YunChengLK.Framework.Data
         public MongoServer(string connectionString)
         {
             this._connectionString = connectionString;
-            //this.Connection = new SqlConnection(connectionString);
+             //this.Connection = new SqlConnection(connectionString);
         }
 
     }
