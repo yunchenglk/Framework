@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YunChengLK.Framework.Data;
 using YunChengLK.Framework.Data.Configuration;
 using YunChengLK.Framework.Data.Core;
+using System.Configuration;
 
 namespace YunChengLK.Framework.Dome
 {
@@ -17,15 +18,13 @@ namespace YunChengLK.Framework.Dome
         {
             get
             {
-                return new SqlServer(ConnectionConfig.Connections["Test"]);
+                var mongourl = ConfigurationManager.AppSettings["mongodb"];
+                if (string.IsNullOrEmpty(mongourl))
+                    return new SqlServer(ConnectionConfig.Connections["Test"]);
+                else
+                    return new SqlServer(ConnectionConfig.Connections["Test"], "mongodb://39.106.117.151:27017");
             }
         }
-        public static MongoServer mongo
-        {
-            get
-            {
-                return new MongoServer(ConnectionConfig.Connections["Test"]);
-            }
-        }
+
     }
 }

@@ -15,18 +15,30 @@ namespace YunChengLK.Framework.Data
     public class SqlServer : BaseDatabase
     {
         private string _connectionString = null;
+        private string _mongoConnectionstr = null;
         public SqlServer(string connectionString)
         {
             this._connectionString = connectionString;
             this.Connection = new SqlConnection(connectionString);
         }
+        public SqlServer(string connectionString, string mongoDB)
+        {
+            if (!string.IsNullOrEmpty(mongoDB))
+            {
+                _mongoConnectionstr = mongoDB;
+            }
+            this._connectionString = connectionString;
+            this.Connection = new SqlConnection(connectionString);
+        }
+
 
         public override int Insert<T>(T model)
         {
             DbParameter[] parms = null;
             this.ConvertParameters<T>(model, ref parms);
             int result = this.ExecuteNonQuery(SqlServerLanguage<T>.InsertScript, parms);
-            new MGServer<T>("mongodb://39.106.117.151:27017").Save(model);
+            if (!string.IsNullOrEmpty(_mongoConnectionstr))
+                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).Save(model);
             return result;
         }
 

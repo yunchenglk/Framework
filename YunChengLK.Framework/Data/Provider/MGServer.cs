@@ -17,15 +17,15 @@ namespace YunChengLK.Framework.Data
         private MongoServer mongodb = null;
         private MongoCollection mongoCollection = null;
         private MongoDatabase mongoDataBase = null;
-        public MGServer(string mongoConnctionStr)
+        public MGServer(string mongoConnctionStr, string dbname)
         {
             this._mongoConnctionStr = mongoConnctionStr;
-            this.mongodb = MongoServer.Create(mongoConnctionStr);
-            this.mongoDataBase = mongodb.GetDatabase("0359idatabase"); // 选择数据库名
-            this.mongoCollection = mongoDataBase.GetCollection("User");
+            this.mongodb = MongoServer.Create(this._mongoConnctionStr);
+            this.mongoDataBase = mongodb.GetDatabase(dbname); // 选择数据库名
         }
         public void Save(T t)
         {
+            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
             string json = JsonConvert.SerializeObject(t);
             var document = BsonDocument.Parse(json);
             string ID = XY.DataAccess.ReflectHelper.GetFieldValue(t, "ID").ToString();
