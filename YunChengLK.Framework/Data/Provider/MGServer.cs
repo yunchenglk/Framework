@@ -23,7 +23,7 @@ namespace YunChengLK.Framework.Data
             this.mongodb = MongoServer.Create(this._mongoConnctionStr);
             this.mongoDataBase = mongodb.GetDatabase(dbname); // 选择数据库名
         }
-        public void Save(T t)
+        public void insert(T t)
         {
             mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
             string json = JsonConvert.SerializeObject(t);
@@ -32,17 +32,18 @@ namespace YunChengLK.Framework.Data
             document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
             mongoCollection.Save(document);
         }
-        public void SaveList(List<T> list)
+        public void insertList(List<T> list)
         {
             mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            List<BsonDocument> listV = new List<BsonDocument>();
             foreach (var item in list)
             {
-                string json = JsonConvert.SerializeObject(item);
-                var document = BsonDocument.Parse(json);
+                var document = BsonDocument.Parse(JsonConvert.SerializeObject(item));
                 string ID = XY.DataAccess.ReflectHelper.GetFieldValue(item, "ID").ToString();
                 document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
-                mongoCollection.Save(document);
+                listV.Add(document);
             };
+            mongoCollection.InsertBatch(listV);
         }
     }
 }

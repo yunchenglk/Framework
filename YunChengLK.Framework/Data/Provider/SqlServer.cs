@@ -38,7 +38,7 @@ namespace YunChengLK.Framework.Data
             this.ConvertParameters<T>(model, ref parms);
             int result = this.ExecuteNonQuery(SqlServerLanguage<T>.InsertScript, parms);
             if (!string.IsNullOrEmpty(_mongoConnectionstr))
-                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).Save(model);
+                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).insert(model);
             return result;
         }
 
@@ -59,7 +59,10 @@ namespace YunChengLK.Framework.Data
             }
             int result = this.ExecuteNonQuery(scriptBlock.ToString(), parmsAll);
             if (!string.IsNullOrEmpty(_mongoConnectionstr))
-                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).SaveList(list.ToList());
+            {
+                var mongo = new MGServer<T>(_mongoConnectionstr, this.Connection.Database);
+                mongo.insertList(list.ToList());
+            }
             return result;
         }
 
