@@ -13,17 +13,15 @@ namespace YunChengLK.Framework.Dome
         static void Main(string[] args)
         {
             IDatabase db = Database.Test;
-            //List<Test> list = new List<Test>();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    Test t = new Test() { ID = Guid.NewGuid(), Name = "测试内容" };
-            //    list.Add(t);
-
-            //}
-            Test t = new Test() { ID = Guid.NewGuid(), Name = "测试内容" };
+            List<Test> list = new List<Test>();
+            for (int i = 0; i < 30; i++)
+            {
+                Test t = new Test() { ID = Guid.NewGuid(), Name = "测试内容" };
+                list.Add(t);
+            }
             db.Execute(() =>
             {
-                int result = db.Insert<Test>(t);
+                int result = db.Insert<Test>(list);
             });
 
             //IList<USER> x = new List<USER>();

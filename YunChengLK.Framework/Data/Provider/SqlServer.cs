@@ -57,8 +57,10 @@ namespace YunChengLK.Framework.Data
                 this.ConvertBatchParameters<T>(item, ref parms, ref scriptBlock, index++);
                 parmsAll = parmsAll.Concat(parms).ToArray();
             }
-
-            return this.ExecuteNonQuery(scriptBlock.ToString(), parmsAll);
+            int result = this.ExecuteNonQuery(scriptBlock.ToString(), parmsAll);
+            if (!string.IsNullOrEmpty(_mongoConnectionstr))
+                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).SaveList(list.ToList());
+            return result;
         }
 
         public override int Delete<T>(Expression<Predicate<T>> where)

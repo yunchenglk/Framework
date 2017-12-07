@@ -32,7 +32,17 @@ namespace YunChengLK.Framework.Data
             document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
             mongoCollection.Save(document);
         }
-
-
+        public void SaveList(List<T> list)
+        {
+            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            foreach (var item in list)
+            {
+                string json = JsonConvert.SerializeObject(item);
+                var document = BsonDocument.Parse(json);
+                string ID = XY.DataAccess.ReflectHelper.GetFieldValue(item, "ID").ToString();
+                document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
+                mongoCollection.Save(document);
+            };
+        }
     }
 }
