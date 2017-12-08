@@ -17,5 +17,7 @@ namespace YunChengLK.Framework.Dome
 
         [Column("Name", DbType.String)]
         public string Name { get; set; }
+        [Column("pwd", DbType.String)]
+        public string pwd { get; set; }
     }
 }

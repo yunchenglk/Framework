@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -59,10 +60,7 @@ namespace YunChengLK.Framework.Data
             }
             int result = this.ExecuteNonQuery(scriptBlock.ToString(), parmsAll);
             if (!string.IsNullOrEmpty(_mongoConnectionstr))
-            {
-                var mongo = new MGServer<T>(_mongoConnectionstr, this.Connection.Database);
-                mongo.insertList(list.ToList());
-            }
+                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).insertList(list.ToList());
             return result;
         }
 
@@ -76,7 +74,10 @@ namespace YunChengLK.Framework.Data
 
             this.ConvertWhere<T>(where, ref whereblock, ref whereparms);
             if (string.IsNullOrEmpty(whereblock) || whereparms == null) return 0;//防止无条件删除
-            return this.ExecuteNonQuery(SqlServerLanguage<T>.DeleteScript + whereblock, whereparms);
+            int result = this.ExecuteNonQuery(SqlServerLanguage<T>.DeleteScript + whereblock, whereparms);
+            if (!string.IsNullOrEmpty(_mongoConnectionstr))
+                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).Delete(new Guid(whereparms[0].Value.ToString()));
+            return result;
         }
 
         public override int Update<T>(T model, Expression<Predicate<T>> where)
@@ -91,7 +92,11 @@ namespace YunChengLK.Framework.Data
             this.ConvertParameters<T>(model, ref parms);
             this.ConvertWhere<T>(where, ref whereblock, ref whereparms);
             if (string.IsNullOrEmpty(whereblock) || whereparms == null) return 0;//防止无条件删除
-            return this.ExecuteNonQuery(SqlServerLanguage<T>.UpdateScript + whereblock, parms, whereparms);
+            int result = this.ExecuteNonQuery(SqlServerLanguage<T>.UpdateScript + whereblock, parms, whereparms);
+            var xx = JsonConvert.SerializeObject(where);
+            if (!string.IsNullOrEmpty(_mongoConnectionstr))
+                new MGServer<T>(_mongoConnectionstr, this.Connection.Database).Save(model);
+            return result;
         }
 
         public override int Update<T>(Expression<Predicate<T>> columns, Expression<Predicate<T>> where)

@@ -7,6 +7,8 @@ using MongoDB.Bson;
 using YunChengLK.Framework.Data.Core;
 using MongoDB.Driver;
 using Newtonsoft.Json;
+using YunChengLK.Framework.Logging;
+using MongoDB.Driver.Builders;
 
 namespace YunChengLK.Framework.Data
 {
@@ -29,8 +31,9 @@ namespace YunChengLK.Framework.Data
             string json = JsonConvert.SerializeObject(t);
             var document = BsonDocument.Parse(json);
             string ID = XY.DataAccess.ReflectHelper.GetFieldValue(t, "ID").ToString();
-            document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
-            mongoCollection.Save(document);
+            document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24))); 
+            mongoCollection.Insert(document);
+            Logger.Info("MongoInsert:"+json);
         }
         public void insertList(List<T> list)
         {
@@ -38,12 +41,31 @@ namespace YunChengLK.Framework.Data
             List<BsonDocument> listV = new List<BsonDocument>();
             foreach (var item in list)
             {
-                var document = BsonDocument.Parse(JsonConvert.SerializeObject(item));
+                string json = JsonConvert.SerializeObject(item);
+                var document = BsonDocument.Parse(json);
                 string ID = XY.DataAccess.ReflectHelper.GetFieldValue(item, "ID").ToString();
                 document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
                 listV.Add(document);
+                Logger.Info("MongoInsertList:" + json);
             };
             mongoCollection.InsertBatch(listV);
+        }
+        public void Save(T t)
+        {
+            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            string json = JsonConvert.SerializeObject(t);
+            var document = BsonDocument.Parse(json);
+            string ID = XY.DataAccess.ReflectHelper.GetFieldValue(t, "ID").ToString();
+            document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
+            mongoCollection.Save(document);
+            Logger.Info("MongoUpdate:" + json);
+        }
+        public void Delete(Guid ID)
+        {
+            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            IMongoQuery query = Query.EQ("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
+            mongoCollection.Remove(query);
+            Logger.Info("MongoDelete:" + ID);
         }
     }
 }
