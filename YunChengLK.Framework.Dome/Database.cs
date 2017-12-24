@@ -23,7 +23,7 @@ namespace YunChengLK.Framework.Dome
                     return new SqlServer(ConnectionConfig.Connections["Test"]);
                 else
                     return new SqlServer(ConnectionConfig.Connections["Test"], "mongodb://39.106.117.151:27017");
-            }
+            } 
         }
 
     }
