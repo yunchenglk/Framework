@@ -18,7 +18,7 @@ namespace YunChengLK.Framework.Dome
             {
                 int result = db.Insert<Test>(t);
                 Console.WriteLine(result);
-            });
+            }); 
             List<Test> list = new List<Test>();
             //for (int i = 0; i < 300; i++)
             //{
