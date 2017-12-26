@@ -13,12 +13,12 @@ namespace YunChengLK.Framework.Dome
         static void Main(string[] args)
         {
             IDatabase db = Database.Test;
-            //Test t = new Test() { ID = Guid.NewGuid(), Name = "测试内容", pwd = "hao123" };
-            //db.Execute(() =>
-            //{
-            //    int result = db.Insert<Test>(t);
-            //    Console.WriteLine(result);
-            //});
+            Test t = new Test() { ID = Guid.NewGuid(), Name = "测试内容", pwd = "hao123" };
+            db.Execute(() =>
+            {
+                int result = db.Insert<Test>(t);
+                Console.WriteLine(result);
+            });
             List<Test> list = new List<Test>();
             //for (int i = 0; i < 300; i++)
             //{
@@ -30,11 +30,11 @@ namespace YunChengLK.Framework.Dome
             //    int result = db.Insert<Test>(list);
             //    Console.WriteLine(result);
             //});
-            db.Execute(() =>
-            {
-                list = db.GetList<Test>(m => m.ID == new Guid("A3DB7DCA-E313-4DE5-A0AE-6EFA4D897362")).ToList();
+            //db.Execute(() =>
+            //{
+            //    list = db.GetList<Test>(m => m.ID == new Guid("A3DB7DCA-E313-4DE5-A0AE-6EFA4D897362")).ToList();
                 
-            });
+            //});
 
             //Test t = new Test() { Name = "test", pwd = "hao123" };
             //db.Execute(() =>

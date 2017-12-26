@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YunChengLK.Framework", "YunChengLK.Framework\YunChengLK.Framework.csproj", "{3A7AACD2-0D23-4F13-AD02-C2FA61B65F2F}"
 EndProject
@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference", "Reference", "{
 		Reference\log4net.dll = Reference\log4net.dll
 		Reference\log4net.xml = Reference\log4net.xml
 		Reference\MongoDB.Bson.dll = Reference\MongoDB.Bson.dll
+		Reference\MongoDB.Driver.Core.dll = Reference\MongoDB.Driver.Core.dll
 		Reference\MongoDB.Driver.dll = Reference\MongoDB.Driver.dll
 		Reference\Newtonsoft.Json.dll = Reference\Newtonsoft.Json.dll
 		Reference\Newtonsoft.Json.xml = Reference\Newtonsoft.Json.xml

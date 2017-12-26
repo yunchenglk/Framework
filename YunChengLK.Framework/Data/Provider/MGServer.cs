@@ -8,36 +8,35 @@ using YunChengLK.Framework.Data.Core;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using YunChengLK.Framework.Logging;
-using MongoDB.Driver.Builders;
 
 namespace YunChengLK.Framework.Data
 {
     [Serializable]
     public class MGServer<T>
     {
-        private string _mongoConnctionStr = null;
-        private MongoServer mongodb = null;
-        private MongoCollection mongoCollection = null;
-        private MongoDatabase mongoDataBase = null;
+        private MongoClient mongoClient = null;
+        private IMongoDatabase database = null;
+
         public MGServer(string mongoConnctionStr, string dbname)
         {
-            this._mongoConnctionStr = mongoConnctionStr;
-            this.mongodb = MongoServer.Create(this._mongoConnctionStr);
-            this.mongoDataBase = mongodb.GetDatabase(dbname); // 选择数据库名
+            MongoUrl mongoUrl = new MongoUrl(mongoConnctionStr);
+            mongoClient = new MongoClient(mongoUrl);
+            database = mongoClient.GetDatabase(dbname);
         }
         public void insert(T t)
         {
-            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            var collection = database.GetCollection<BsonDocument>(typeof(T).Name);
             string json = JsonConvert.SerializeObject(t);
             var document = BsonDocument.Parse(json);
             string ID = XY.DataAccess.ReflectHelper.GetFieldValue(t, "ID").ToString();
-            document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24))); 
-            mongoCollection.Insert(document);
-            Logger.Info("MongoInsert:"+json);
+            var id = new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24));
+            document.Add("_id", id);
+            collection.InsertOne(document);
+            Logger.Info("MongoInsert:" + json);
         }
         public void insertList(List<T> list)
         {
-            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            var collection = database.GetCollection<BsonDocument>(typeof(T).Name);
             List<BsonDocument> listV = new List<BsonDocument>();
             foreach (var item in list)
             {
@@ -48,24 +47,33 @@ namespace YunChengLK.Framework.Data
                 listV.Add(document);
                 Logger.Info("MongoInsertList:" + json);
             };
-            mongoCollection.InsertBatch(listV);
+            collection.InsertMany(listV);
         }
         public void Save(T t)
         {
-            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
+            var collection = database.GetCollection<BsonDocument>(typeof(T).Name);
             string json = JsonConvert.SerializeObject(t);
             var document = BsonDocument.Parse(json);
             string ID = XY.DataAccess.ReflectHelper.GetFieldValue(t, "ID").ToString();
-            document.Add("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
-            mongoCollection.Save(document);
-            Logger.Info("MongoUpdate:" + json);
+            var id = new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24));
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
+            document.Add("_id", id);
+            var resut = collection.DeleteOne(filter);
+            if (resut.DeletedCount == 1)
+            {
+                collection.InsertOne(document);
+                Logger.Info("MongoUpdate:" + json);
+            }
+            else
+                Logger.Error("MongoUpdate:" + json);
         }
         public void Delete(Guid ID)
         {
-            mongoCollection = mongoDataBase.GetCollection(typeof(T).Name);
-            IMongoQuery query = Query.EQ("_id", new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24)));
-            mongoCollection.Remove(query);
-            Logger.Info("MongoDelete:" + ID);
+            var collection = database.GetCollection<BsonDocument>(typeof(T).Name);
+            var id = new ObjectId(ID.ToString().Replace("-", "").Substring(0, 24));
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", id);
+            var resut = collection.DeleteOne(filter);
+            Logger.Info("MongoDelete:" + resut);
         }
     }
 }
